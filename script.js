@@ -26,11 +26,16 @@ l'ultima e viceversa per l'ultima miniatura se l'utente clicca la freccia verso 
 // creo le variabili per il collegamento degli elementi dall'HTML
 const carouselContainerEl = document.getElementById('carousel-container');
 const carouselInnerEl = document.getElementById('carousel-inner');
+const arrowUpEl = document.getElementById('arrow-up');
+const arrowDownEl = document.getElementById('arrow-down');
+let activePageEl = document.getElementById('active-page');
+let cardEl = document.getElementById('cards');
+
 
 
 
 // creo array di oggetti
-const images = [
+let images = [
     {
         image: 'img/01.webp',
         title: 'Marvel\'s Spiderman Miles Morale',
@@ -54,27 +59,71 @@ const images = [
     }
 ];
 
-console.log(images)
+console.log(images[0]);
 
 
+// creo variabile contatore
+let index = 0;
+
+cardEl = index;
 
 
 // creo il ciclo for per identificare gli elementi
 for(let i = 0; i < images.length; i++){
 
+    
+    // creo l'elemento div e lo appendo al container
+    let cardEl = document.createElement('div');
+    cardEl.classList.add('cards');
+    carouselInnerEl.append(cardEl);
+    
+    console.log(cardEl)
+
+
+
     // creo variabile per poter pescare i singoli elementi
     let arrayInnerEl = images[i];
+
     
-    
+
     // creo l'elemento immagine e lo appendo al container
     let imageEl = document.createElement('img');
-    imageEl.src = 'img/' + arrayInnerEl.image;
+    imageEl.classList.add('image')
+    imageEl.src = arrayInnerEl.image;
     
-    carouselInnerEl.append(imageEl);
+    cardEl.append(imageEl);
 
 
+
+
+  
+
+    
+    
+
+
+    /*let titleEl = document.createElement('div');
+    titleEl.classList.add('title');
+    titleEl.innerText = arrayInnerEl.title;
+
+    carouselInnerEl.append(titleEl);
+    */
+
+    
 }
 
+
+
+
+arrowUpEl.addEventListener('click', function(){
+
+    
+    index++;
+
+    activePageEl = cardEl[index];
+    
+    console.log(index);
+});
 
 
 
