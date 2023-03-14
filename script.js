@@ -22,15 +22,21 @@ l'ultima e viceversa per l'ultima miniatura se l'utente clicca la freccia verso 
 */
 
 
+/*
+BONUS 1:
+Aggiungere le thumbnails (sottoforma di miniatura) ed al click attivare l’immagine corrispondente.
+*/
 
 // creo le variabili per il collegamento degli elementi dall'HTML
 const carouselContainerEl = document.getElementById('carousel-container');
 const carouselInnerEl = document.getElementById('carousel-inner');
+const slideContainerEl = document.getElementById('slider-container');
+const activeImgEl = document.getElementById('active-img');
 const arrowUpEl = document.getElementById('arrow-up');
 const arrowDownEl = document.getElementById('arrow-down');
-let activePageEl = document.getElementById('active-page');
-let cardEl = document.getElementById('cards');
-
+const titleEl = document.getElementById('title');
+const textEl = document.getElementById('text');
+const thumbnailsEl = document.getElementById('thumbnails');
 
 
 
@@ -59,71 +65,103 @@ let images = [
     }
 ];
 
-console.log(images[0]);
-
-
-// creo variabile contatore
+// indice contatore
 let index = 0;
 
-cardEl = index;
+newThumbnails(thumbnailsEl, images);
 
+const newThumbnailArray = document.querySelectorAll('.thumbnail');
 
-// creo il ciclo for per identificare gli elementi
-for(let i = 0; i < images.length; i++){
+showImg(images, index);
 
+arrowUpEl.addEventListener('click', function() {
     
-    // creo l'elemento div e lo appendo al container
-    let cardEl = document.createElement('div');
-    cardEl.classList.add('cards');
-    carouselInnerEl.append(cardEl);
+    index = indexUpdate(index, 'su');
     
-    console.log(cardEl)
-
-
-
-    // creo variabile per poter pescare i singoli elementi
-    let arrayInnerEl = images[i];
-
+    showImg(images, index);
     
+});
 
-    // creo l'elemento immagine e lo appendo al container
-    let imageEl = document.createElement('img');
-    imageEl.classList.add('image')
-    imageEl.src = arrayInnerEl.image;
+
+arrowDownEl.addEventListener('click', function() {
     
-    cardEl.append(imageEl);
-
-
-
-
-  
-
+    index = indexUpdate(index, 'giu');
     
+    showImg(images, index);
     
-
-
-    /*let titleEl = document.createElement('div');
-    titleEl.classList.add('title');
-    titleEl.innerText = arrayInnerEl.title;
-
-    carouselInnerEl.append(titleEl);
-    */
-
-    
-}
-
-
-
-
-arrowUpEl.addEventListener('click', function(){
-
-    
-    index++;
-
-    activePageEl = cardEl[index];
-    
-    console.log(index);
 });
 
 
 
+
+// ----------- Function --------------
+
+
+
+// mostra le immagini, titolo e descrizioni delle slide
+function showImg(slideArray, actualIndex) {
+
+    const showObject = slideArray[actualIndex];
+
+    activeImgEl.src = showObject.image;
+
+    titleEl.innerText = showObject.title;
+
+    textEl.innerText = showObject.text;
+
+   
+
+    newThumbnailArray.forEach((actualThumbnail) => {
+        actualThumbnail.classList.remove('active');
+      })
+    
+      // rendo "active" la miniatura relativa all'index
+      newThumbnailArray[actualIndex].classList.add('active');
+
+}
+
+
+// funzione per il carosello infinito
+function indexUpdate(actualIndex, direction) {
+
+    if(direction == 'su') {
+
+        if(actualIndex <= 0) {
+
+            return images.length - 1;
+
+        } else {
+
+            return actualIndex - 1;
+
+        }
+
+    }   else {
+
+        if(actualIndex >= images.length - 1) {
+
+            return 0;
+
+        }   else {
+
+            return actualIndex + 1;
+        }
+    }
+
+}
+
+
+function newThumbnails(thumbnailsElContainer, arrayThumbnails) {
+
+    arrayThumbnails.forEach((actualImage) => {
+
+        let newElementThumbnail = document.createElement('img');
+        newElementThumbnail.src = actualImage.image;
+        newElementThumbnail.classList.add('thumbnail');
+        
+        thumbnailsElContainer.append(newElementThumbnail);
+    });
+
+    
+
+}
